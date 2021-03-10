@@ -1,0 +1,97 @@
+{% extends 'accounts/base.html' %}
+{% load widget_tweaks %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+  <div>
+    <div class="marginTop  container">
+      <div class="row loginHeight">
+        <div  class="col-md-6 p-5 box effect7">
+          <div class="h1">
+            <h2 style="color: rgb(255, 255, 255); text-shadow: 2px 2px 4px #000000;" class="text-center">Log in to My Site</h2>
+          </div>
+          {% if form.errors %}
+            <span class="help-block">{{ form.username.errors }}</span>
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="form-group">
+              <label for="{{ form.username.id_for_label }}" class=" col-form-label" >{{ form.username.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field form.username placeholder=form.username.label %}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="{{ form.password.id_for_label }}" class=" col-form-label" >{{ form.password.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field form.password placeholder=form.password.label %}
+                </div>
+              </div>
+            </div>
+            {% if form.errors %}
+              <p style="color: red">{{ form.errors }}</p>
+            {% endif %}
+            {% for error in form.errors %}
+              <p style="color: red">{{ error.help_text }}</p>
+            {% endfor %}
+            
+          <div class="row m-3">
+            <div class="col text-center">
+              <button type="submit" role="button" class="btn btn-sm btn-outline-primary btn-lg btn-iconed btn-rounded">
+                 <i class="fa fa-arrow-left"></i> <span class="spn">Login</span>
+              </button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="row">
+              <div class="col">
+                <div style="font-size: 12px;" class="d-flex justify-content-center links">
+                  Don't have an account? <a href="{% url 'accounts:signup' %}" class="ml-2" >Sign up</a>
+                </div>
+              </div>
+              <div class="col">
+                <div style="font-size: 12px;" class="d-flex justify-content-center links">
+                  Forgot Password? <a href="{% url 'accounts:reset_password' %}" class="ml-2">Reset password</a>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="d-flex justify-content-center links">
+              <a href="#" class="ml-2">Contact support</a>
+            </div> -->
+          </div>
+          <div class="mt-4">
+            <div class="row">
+              <div class="col-md-3">
+                <div style="font-size: 12px;" class="d-flex justify-content-center links">
+                  <a href="{% provider_login_url 'google' %}" class="ml-2" >Sign in with Google</a>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div style="font-size: 12px;" class="d-flex justify-content-center links">
+                  <a href="{% provider_login_url 'facebook'  method='oauth2' %}" class="ml-2">Sign in with Facebook</a>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div style="font-size: 12px;" class="d-flex justify-content-center links">
+                   <a href="{% provider_login_url 'microsoft' %}" class="ml-2">Sign in with Microsoft</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div  class="col-md-6 right login_card box effect8">
+          <img class="img-fluid" src="{% static 'images/Happy senior people greeting doctor.jpg' %}" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "Enews/utils/layout.html" %}
+{% load static %}
+{% block head %}
+  {% block title %}{{title}}{% endblock %}
+{% endblock %}
+{% block body %}
+<title>{{title}}</title>
+<style>
+  .tag {
+    color: #7386d5 !important;
+  }
+  .tag:hover {
+    color: #7387d5c5 !important;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <!-- Latest Posts -->
+    <main class="posts-listing col-lg-8">
+      <div class="container">
+        <div class="row">
+          <!-- post -->
+          {% for post in queryset %}
+          <div class="post col-xl-6">
+            <!-- style="width: 100%; height: 40%"  -->
+            <div class="post-thumbnail">
+              <a href="{{ post.get_absolute_url }}">
+                <img
+                  style="background-size: cover; background-position: 50% 50%; width: 100%; height: 250px;"
+                  src="{{ post.thumbnail.url }}"
+                  alt="..."
+                  class="img-fluid"
+                />
+              </a>
+            </div>
+            <div
+              style="
+                height: 50% !important;
+                z-index: 99999999;
+                position: relative;
+                background-color: white;
+              "
+              class="post-details"
+            >
+              <div class="post-meta d-flex justify-content-between">
+                <div class="date meta-last mt-2">
+                  {{ post.time_stamp|date:"d-m-y" }}
+                </div>
+                <div class="category mt-2">
+                  {% for tag in post.categories.all %}
+                    <a class="tag" href="{{ tag.get_cat_url }}">#{{tag}}</a>
+                    <!-- {% if not forloop.last %},{% endif %} -->
+                  {% endfor %}
+                </div>
+              </div>
+              <a href="{{ post.get_absolute_url }}">
+                <h3 style="font-size: 20px; font-weight: 400;" class="h4 display-1">
+                  {{ post.title|truncatechars_html:60 }}
+                </h3>
+              </a>
+              <div class="text-muted post-detail-item">
+                {{ post.get_over_view_mark_down | truncatechars_html:85 }}
+              </div>
+              <footer class="post-footer d-flex align-items-center">
+                <a href="{{ post.get_absolute_url }}" class="author d-flex align-items-center flex-wrap">
+                  <div class="avatar">
+                    <img src="{{ post.author.profile_image.url }}" alt="..." class="img-fluid"/>
+                  </div>
+                    <span class="status">
+                      <div class="like-count{{post.id}}">
+                        {{ post.author.user.username.capitalize }}
+                      </div>
+                      <div class="text-muted">
+                         <i class="fa fa-clock-o"></i> {{ post.time_stamp | timesince }} ago
+                      </div>
+                    </span>
+                </a>
+                  <div class="pl-5 date comments meta-last">
+                    <i class="fa fa-comment-o"></i>{{ post.comments.count }}
+                  </div>
+                  <div class="pl-3 date comments meta-last">
+                    <i class="fa fa-comment-o"></i>{{ post.comments.count }}
+                  </div>
+              </footer>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+          <ul
+            class="pagination pagination-template d-flex justify-content-center"
+          >
+            <!-- ss -->
+            {% if queryset.has_previous %}
+            <li class="page-item">
+              <a
+                href="?{{page_request_var}}={{ queryset.previous_page_number }}"
+                class="page-link"
+              >
+                <i class="fa fa-angle-left"></i>
+              </a>
+            </li>
+            <!-- and num < queryset.number|:'3' -->
+            {% endif %} 
+            {% for num in queryset.paginator.page_range %} 
+              {% if queryset.number == num %}
+                <li class="page-item">
+                  <a
+                    href="?{{page_request_var}}={{ queryset.number }}"
+                    class="page-link active"
+                    >{{ num }}</a
+                  >
+                </li>
+              {% elif num > queryset.number|add:'-3' %}
+                <li class="page-item">
+                  <a
+                    href="?{{page_request_var}}={{ queryset.number }}"
+                    class="page-link"
+                    >{{ num }}</a
+                  >
+                </li>
+              {% endif %} 
+            {% endfor %}
+            {% if queryset.has_next %}
+            <li class="page-item">
+              <a
+                href="?{{page_request_var}}={{ queryset.next_page_number }}"
+                class="page-link"
+              >
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </main>
+    {% include 'Enews/sidebar.html' with latest=latest category_count=category_count queryset=queryset ta=ta %}
+  </div>
+</div>
+
+{% endblock %}

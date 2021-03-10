@@ -1,0 +1,195 @@
+{% extends "Ecommunity/base.html" %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+ 
+{% block body %}
+<div class="community">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div id="content" class="snippet-hidden">
+                    <div class="container">
+                        <div class="m-3">
+                            <h4 class="display-4"> 
+                                Lorem ipsum dolor sit amet.
+                            </h4>
+                            <p style="font-size: 24px !important;" class="text-muted display-3 mt-5"> 
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            </p>
+                            <p class="mt-4">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                sed do eiusmod tempor incididunt ut labore et dolore magna
+                                aliqua. Vestibulum lorem sed risus ultricies. Sed vulputate
+                                mi sit amet mauris commodo. Aliquam ultrices sagittis orci a
+                                scelerisque. Aliquet enim tortor at auctor. Risus nec feugiat
+                                in fermentum posuere urna. Malesuada fames ac turpis egestas integer
+                                eget aliquet nibh. Eu feugiat pretium nibh ipsum. Morbi tristique senectus
+                                et netus et malesuada fames. Ultricies mi quis hendrerit dolor. Nisi quis eleifend
+                                quam adipiscing vitae proin. Molestie ac feugiat sed lectus. Venenatis urna cursus
+                                eget nunc scelerisque viverra mauris in aliquam. Non enim praesent elementum facilisis
+                                leo vel fringilla est ullamcorper. Dui id ornare arcu odio. Et sollicitudin ac orci phasellus
+                                egestas tellus rutrum. Ultricies lacus sed turpis tincidunt id aliquet. Ac tincidunt vitae semper
+                                quis lectus. Faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav style="box-shadow: -3px -3px 6px rgba(0, 0, 0, 0.1);" id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky">
+                    <div id="i"  class="pt-3 pl-2 pb-3">
+                        <p href="#calculatorSubmenu" style="font-size: 22px !important;cursor: pointer;" data-toggle="collapse" aria-expanded="true">
+                            Lorem ipsum dolor sit amet <span class="pl-2"><i id="i" style="font-size: medium;" class="fa fa-chevron-up"></i></span>
+                        </p>
+                        <ul class="collapse show mt-4 list-unstyled flex-column" id="calculatorSubmenu">
+                            <li class="nav-item side_info act">
+                                <a class="nav-link side_ nav-it" href="#">
+                                    <span data-feather="support"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                            <li class="nav-item side_info">
+                                <a class="nav-link side_" href="#">
+                                    <span data-feather="team"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                            <li class="nav-item  side_info">
+                                <a class="nav-link side_" href="#">
+                                    <span data-feather="ecal overflow"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                            <li class="nav-item side_info">
+                                <a class="nav-link side_" href="#">
+                                    <span data-feather="articles"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                            <li class="nav-item side_info">
+                                <a class="nav-link side_" href="#">
+                                    <span data-feather="articles"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                            <li class="nav-item side_info">
+                                <a class="nav-link side_" href="#">
+                                    <span data-feather="articles"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                            <li class="nav-item side_info">
+                                <a class="nav-link side_" href="#">
+                                    <span data-feather="articles"></span>
+                                    Consectetur
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- <p style="font-size: 20px !important;">Lorem ipsum dolor sit amet <span class="pl-2"><i style="font-size: medium;" class="fa fa-chevron-up"></i></span></p> -->
+                    </div>
+                    <!-- <ul id="info nav-it" class="nav flex-column">
+                        <li class="nav-item side_info act">
+                            <a class="nav-link side_ nav-it" href="#">
+                                <span data-feather="support"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="team"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        <li class="nav-item  side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="ecal overflow"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="articles"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="articles"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="articles"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="articles"></span>
+                                Consectetur
+                            </a>
+                        </li>
+                        
+                    </ul> -->
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+    function myFunction() {
+        var drop = document.getElementById('drop')
+        var i = document.getElementById('i')
+        // var x = document.getElementById("myDIV");
+        if(drop.className === "drop") {
+            // i.className = "mystyle2";
+            console.log("JJ");
+        } else {
+            console.log("KK");
+            // i.className = "mystyle";
+        }
+    }
+    drop.addEventListener('click', (e)=> {
+      e.preventDefault(); 
+      if(i.className === 'fa-chevron-up'){
+        console.log("Nice");
+        // i.classList.remove("fa-chevron-up");
+        i.className = "pt-5"
+        // i.classList.add("fa-chevron-down");
+      }
+    //   else if(i.className = 'fa-chevron-down'){
+    //     console.log('No');
+    //     document.getElementById("other_ded_amt").classList.remove("fa-chevron-down");
+    //     document.getElementById("other_ded_amt").classList.add("fa-chevron-up");
+    //   }
+      else{
+          console.log('No');
+            drop.className = "pt-5"
+      }
+    })
+</script>
+<script type="text/javascript">
+    let nav = document.querySelector('#info');
+    let navlink = document.getElementsByClassName('side_info');
+    for (var i = 0; i < navlink.length; i++) {
+        navlink[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("act");
+            current[0].className = current[0].className.replace(" act", "");
+            this.className += " act";
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    let navi = document.querySelector('#nav-it');
+    let navlinki = document.getElementsByClassName('side_');
+    for (var i = 0; i < navlinki.length; i++) {
+        navlinki[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("nav-it");
+            current[0].className = current[0].className.replace(" nav-it", "");
+            this.className += " nav-it";
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% load static %}
+<head>
+  {% block head %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="all,follow" />
+    <!-- Bootstrap CSS-->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'Enews/vendor/bootstrap/css/bootstrap.min.css' %}"
+    />
+    <!-- Font Awesome CSS-->
+    <link
+      rel="stylesheet"
+      href="{% static 'Enews/vendor/font-awesome/css/font-awesome.min.css' %}"
+    />
+    <!-- Custom icon font-->
+    <link rel="stylesheet" href="{% static 'Enews/css/fontastic.css '%}" />
+    <!-- Google fonts - Open Sans-->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
+    />
+    <!-- Fancybox-->
+    <link
+      rel="stylesheet"
+      href="{% static 'Enews/vendor/@fancyapps/fancybox/jquery.fancybox.min.css' %}"
+    />
+    <!-- theme stylesheet-->
+    <link href="{% static 'community/dashboardy.css' %}" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="{% static 'Enews/css/style.defaultes.css' %}"
+      id="theme-stylesheet"
+    />
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'Enews/css/custom.css' %}" />
+    <link href="{% static 'Enews/css/tinyMCE.css' %}" rel="stylesheet" />
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'Enews/favicon.png' %}" />
+    {% block scripts %}
+    {% endblock %}
+  {% endblock %}
+</head>

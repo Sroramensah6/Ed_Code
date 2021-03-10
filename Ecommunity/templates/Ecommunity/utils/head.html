@@ -1,0 +1,55 @@
+{% load static %}
+{% load compress %}
+<head>
+  {% block head %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+    <title>{% block title %}{% endblock %}</title>
+  
+    <!-- Bootstrap CSS CDN -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    {% comment %}
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
+    />
+    {% endcomment %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css"
+    />
+    <!-- Our Custom CSS -->
+    {% compress css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'main.scss' %}" />
+    {% endcompress %}
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'fontawesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'Enews/css/fontastic.css '%}" />
+    <link href="{% static 'community/dashboardy.css' %}" rel="stylesheet" />
+    <!-- <link href="{% static 'community/style.css' %}" rel="stylesheet" /> -->
+  
+    <link
+      rel="stylesheet"
+      href="{% static 'Enews/css/style.default.css' %}"
+      id="theme-stylesheet"
+    />
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'Enews/css/custom.css' %}" />
+    <!-- JSS -->
+    {% block scripts %}
+    {% endblock %}
+  {% endblock %}
+</head>

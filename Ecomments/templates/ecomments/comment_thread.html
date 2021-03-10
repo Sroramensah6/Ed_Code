@@ -1,0 +1,120 @@
+{% extends "Enews/utils/layout.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+<style>
+  .hide {
+    display : none;
+  }
+</style>
+
+    <div class="container">
+        <div class="row">
+            <!-- Latest Posts -->
+        <main class="post blog-post col-lg-8"> 
+            <div class="container">
+                <div class="post-single">
+                    <div class="post-details">
+                        <div class="post-comments">
+                          <header>
+                              <!-- no-of-comments -->
+                            <h3 class="h6">Comment{% if comment.children.count > 1 %}s{% endif %}<span>({{ comment.children.count }})</span></h3>
+                          </header>
+                            <div class="comment">
+                                <div class="comment-header d-flex justify-content-between">
+                                    <div class="user d-flex align-items-center">
+                                        <div class="image">
+                                            {% if comment.user.author %}
+                                                <img src="{{ comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                                            {% else %}
+                                                <img src="{{ comment.user.profile.profile_image.url }}" alt="..." class="img-fluid rounded-circle">
+                                            {% endif %}
+                                        </div>
+                                        <div class="title">
+                                            <strong>
+                                                {{ comment.user.username }}
+                                            </strong>
+                                            <span class="date">{{ comment.time_stamp|timesince}} ago</span>
+                                            <!-- |
+                                            {% if comment.children.count > 0 %}
+                                              <span class="date">
+                                                <a href="#" class="comments-reply-section-btn">
+                                                  ({{comment.children.count }}) Comment{% if comment.children.count > 1 %}s{% endif %}
+                                                </a>
+                                              </span>
+                                            {% endif %} -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment-body mb-5">
+                                    {{ comment.content }}
+                                    <hr>
+
+                                    <!-- Start comment_reply -->
+                                    <div>
+                                        {% for child_comment in comment.children %}
+                                            <div class="comment">
+                                                <div class="comment-header d-flex justify-content-between">
+                                                    <div class="user d-flex align-items-center">
+                                                        <div class="image">
+                                                            {% if child_comment.user.author %}
+                                                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                                                            {% else %}
+                                                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="{{ child_comment.user.username }}'s profile image" class="img-fluid rounded-circle">
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="title">
+                                                            <strong>
+                                                                {{ child_comment.user.username}}
+                                                            </strong>
+                                                            <span class="date">
+                                                                {{ child_comment.time_stamp|timesince}} ago
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="comment-body">
+                                                    <p>{{ child_comment.content }}</p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- End comment_reply  -->
+                                    <div class="mb-4">
+                                        <div class="add-comment">
+                                            {% if request.user.is_authenticated %}
+                                                <form method="POST" action="" class="commenting-form">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12">
+                                                            {% render_field form.content|add_class:'form-control' id="usercomment" rows='4' placeholder='Comment on comment' %}
+                                                            <input type="hidden" name="parent_id" value="{{comment.id}}">
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <button type="submit" class="btn btn-secondary">Post Comment</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-outline-primary btn-iconed" href="{% url 'accounts:login' %}">
+                                                    Login to comment
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+      {% include 'Enews/sidebar.html' with latest=latest category_count=category_count queryset=queryset %}
+    </div>
+  </div>
+
+
+{% endblock %}

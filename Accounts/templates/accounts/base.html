@@ -1,0 +1,49 @@
+{% load static %}
+{% load compress %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {% block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>
+            {% block title %}{% endblock %}
+        </title>
+
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Our Custom CSS -->
+        {% compress css %}
+            <link rel="stylesheet" type="text/x-scss" href="{% static 'main.scss' %}" />
+        {% endcompress %}
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'fontawesome.min.css' %}">
+        <link href="{% static 'stylezses.css' %}" rel="stylesheet">
+        <link href="{% static 'stylesmain34.css' %}" rel="stylesheet">
+        <link href="{% static 'community/style.css' %}" rel="stylesheet">
+        <!-- Start JSS -->
+        {% block scripts %}
+
+        {% endblock %}
+        <!-- End JSS -->
+    {% endblock %}
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Page Content  -->
+        <div id="content">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+</body>
+
+</html> 

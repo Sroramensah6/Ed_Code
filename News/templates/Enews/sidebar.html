@@ -1,0 +1,58 @@
+
+<aside class="col-lg-4">
+  <div class="widget search">
+    <header>
+      <h3 class="h6">Search the blog</h3>
+    </header>
+    <form action="{% url 'news:search' %}" class="search-form">
+      <div class="form-group">
+        <input type="text" name="q" placeholder="What are you looking for?" />
+        <button type="submit" class="submit">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="widget latest-posts">
+    <header>
+      <h3 class="h6">Latest Posts</h3>
+    </header>
+    <div class="blog-posts">
+      {% for obj in latest %}
+      <a href="{{ obj.get_absolute_url }}">
+        <div class="item d-flex align-items-center">
+          <div class="image">
+            <img style="background-size: cover; width: 100%; height: 60px;" src="{{ obj.thumbnail.url }}" alt="..." class="img-fluid" />
+          </div>
+          <div class="title">
+            <strong style="font-size: 15px; font-weight: 400;" class="h4 display-1">
+              {{ obj.title|truncatechars_html:40  }}
+            </strong>
+            <div class="d-flex align-items-center">
+              <div class="views">
+                <i class="fa fa-eye"></i> {{ obj.view_count }}
+              </div>
+              <div class="comments">
+                <i class="fa fa-comment-o"></i>{{ obj.comments.count }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="widget categories">
+    <header>
+      <h3 class="h6">Tags</h3>
+    </header>
+    {% for obj in category_count %}
+    <div class="item d-flex justify-content-between">
+        <a href="{% url 'news:post-category' obj.categories__slug %}" class="tag" >
+            #{{ obj.categories__title }}
+        </a>
+        <span>{{ obj.categories__title__count }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</aside>

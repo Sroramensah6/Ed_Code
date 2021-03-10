@@ -1,0 +1,150 @@
+<section class="rating-widget">
+    <!-- Rating Stars Box --> 
+    {% if count %}
+        {% for stars in comment.get_rating  %}
+        <!-- {{stars.num_rate}} -->
+            {% if user.id ==  stars.user_id%}
+            <!-- {{stars.user_id}} | {{stars.post_id}} |  -->
+                {% if stars.rating == 1 %}
+                    <form action="{{comment.get_rate_url}}" method="POST" class="rate-form" id="{{comment.id}}">
+                        {% csrf_token %}
+                        <div class="rating-stars text-center">
+                            <ul id="stars" class="">
+                                <button type="submit" class="star btn-like selected" title="Poor" id="1" data-value="1">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="Fair" data-value="2">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="Good" data-value="3">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="Excellent" data-value="4">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="WOW!!!" data-value="5">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                            </ul>
+                        </div>
+                    </form>
+                {% elif stars.rating == 2 %}
+                    <form action="{{comment.get_rate_url}}" method="POST" class="rate-form" id="{{comment.id}}">
+                        {% csrf_token %}
+                        <div class="rating-stars text-center">
+                            <ul id="stars" class="">
+                                <button type="submit" class="star btn-like selected" title="Poor" id="1" data-value="1">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Fair" data-value="2">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="Good" data-value="3">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="Excellent" data-value="4">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="WOW!!!" data-value="5">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                            </ul>
+                        </div>
+                    </form>
+                {% elif stars.rating == 3 %}
+                    <form action="{{comment.get_rate_url}}" method="POST" class="rate-form" id="{{comment.id}}">
+                        {% csrf_token %}
+                        <div class="rating-stars text-center">
+                            <ul id="stars" class="">
+                                <button type="submit" class="star btn-like selected" title="Poor" id="1" data-value="1">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Fair" data-value="2">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Good" data-value="3">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="Excellent" data-value="4">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="WOW!!!" data-value="5">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                            </ul>
+                        </div>
+                    </form>
+                {% elif stars.rating == 4 %}
+                    <form action="{{comment.get_rate_url}}" method="POST" class="rate-form" id="{{comment.id}}">
+                        {% csrf_token %}
+                        <div class="rating-stars text-center">
+                            <ul id="stars" class="">
+                                <button type="submit" class="star btn-like selected" title="Poor" id="1" data-value="1">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Fair" data-value="2">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Good" data-value="3">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Excellent" data-value="4">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like" title="WOW!!!" data-value="5">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                            </ul>
+                        </div>
+                    </form>
+                {% else %}
+                    <form action="{{comment.get_rate_url}}" method="POST" class="rate-form" id="{{comment.id}}">
+                        {% csrf_token %}
+                        <div class="rating-stars text-center">
+                            <ul id="stars" class="">
+                                <button type="submit" class="star btn-like selected" title="Poor" id="1" data-value="1">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Fair" data-value="2">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Good" data-value="3">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="Excellent" data-value="4">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                                <button type="submit" class="star btn-like selected" title="WOW!!!" data-value="5">
+                                    <i class="fa fa-star fa-fw"></i>
+                                </button>
+                            </ul>
+                        </div>
+                    </form>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <form action="{{comment.get_rate_url}}" method="POST" class="rate-form" id="{{comment.id}}">
+            {% csrf_token %}
+            <div class="rating-stars text-center">
+                <ul id="stars" class="">
+                    <button type="submit" class="star btn-like" title="Poor" id="1" data-value="1">
+                        <i class="fa fa-star fa-fw"></i>
+                    </button>
+                    <button type="submit" class="star btn-like" title="Fair" data-value="2">
+                        <i class="fa fa-star fa-fw"></i>
+                    </button>
+                    <button type="submit" class="star btn-like" title="Good" data-value="3">
+                        <i class="fa fa-star fa-fw"></i>
+                    </button>
+                    <button type="submit" class="star btn-like" title="Excellent" data-value="4">
+                        <i class="fa fa-star fa-fw"></i>
+                    </button>
+                    <button type="submit" class="star btn-like" title="WOW!!!" data-value="5">
+                        <i class="fa fa-star fa-fw"></i>
+                    </button>
+                </ul>
+            </div>
+        </form>
+    {% endif %}
+</section>

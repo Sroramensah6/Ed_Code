@@ -1,0 +1,214 @@
+{% extends "Ecommunity/utils/layout.html" %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+ 
+{% block body %}
+<style>
+    .p{
+        font-size: 14px;
+    }
+    .btn-sm, .btn-group-sm > .btn {
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.5 !important;
+        border-radius: 0.2rem !important;
+    }
+    .status{
+        display: inline-block;
+        margin: 0 3px 0 0;
+        min-width: 44px;
+        height: auto;
+        font-size: 11px;
+        padding: 6px;
+        border: 1px solid transparent;
+        border-radius: 3px;
+    }
+</style>
+<div class="community">
+    <div class="container">
+        <div id="content" class="snippet-hidden">
+            <div class="row">
+                <main class="col-md-8">
+                    <div class="border-bottom mb-3">
+                        <div class="mb-5">
+                            <div class="row mb-5">
+                                <div class="col">
+                                    <h4 style="font-size: large; float: left;" class="display-4">All Questions</h4>
+                                </div>
+                                <div class="col">
+                                    {% if request.user.is_authenticated %}
+                                        <div style="float: right;" class="btn btn-sm btn-outline-primary">
+                                            Ask Questions
+                                        </div>
+                                    {% else %}
+                                    <div style="float: right;" class="btn btn-sm btn-outline-primary">
+                                        Ask Questions
+                                    </div>
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-3">
+                                <div class="col">
+                                    <h4 style="font-size: small; float: left;" class="display-4">
+                                        {{ Q_count }} questions asked
+                                    </h4>
+                                </div>
+                                <div class="col-md-8">
+                                    <div style="float: right;" class="">
+                                        <div class="btn-group mr-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary">Newest</button>
+                                            <!-- <button type="button" class="btn btn-sm btn-outline-primary">Active</button> -->
+                                            <button type="button" class="btn btn-sm btn-outline-primary">Unanswered</button>
+                                            <!-- <button type="button" class="btn btn-sm btn-outline-primary btn-iconed"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                More <span class="spn pr-2"><i class="fa fa-chevron-down"></i> </span>
+                                            </button> -->
+                                        </div>
+                                        <!-- <button role="button" class="btn btn-outline-primary btn-sm btn-iconed btn-rounded">
+                                            Flitter <span class="spn mr-2"><i class="fa fa-cog"></i></span>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 content">
+                        {% for obj in queryset %}
+                            <div class="mb-3 border-bottom">
+                                <div class="row mb-3 no-gutters">
+                                    <!-- <div class="col-md-2 text-center">
+                                        <div style="color: #fff;" class="status answered-accepted p-2">
+                                            <span style="font-size: large; margin-top: 10px;" class="mt-3 display-4"> 
+                                                <strong>25218</strong> 
+                                            </span>
+                                            answers
+                                        </div>
+                                    </div> -->
+
+                                    <div class="col">
+                                        <span  class="reputation-score status">
+                                            {% if obj.num_liked == 0 %}
+                                                <div style="color: aqua;" class="text-center">
+                                                    {{ obj.num_liked }}
+                                                </div>
+                                            {% else %}
+                                                <div class="text-center">
+                                                    {{ obj.num_liked }}
+                                                </div>
+                                            {% endif %}
+                                            <div class="text-muted">
+                                                Likes
+                                            </div>
+                                        </span>
+                                        <span  class="reputation-score status">
+                                            <div class="text-center">
+                                                {{ obj.view_count }}
+                                            </div>
+                                            <div class="text-muted">
+                                                Views
+                                            </div>
+                                        </span>
+                                        <span class="status">
+                                            <div class="text-center">
+                                                {{ obj.answers.count }}
+                                            </div>
+                                            <div class="text-muted">
+                                                answers
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span>
+                                            <a href="{{ obj.get_absolute_url }}">
+                                                {{ obj.title | truncatechars:50}}?
+                                            </a>
+                                        </span>
+                                        <div class="row pt-3">
+                                            <div class="col">
+                                                {% for tag in obj.tags.all %}
+                                                    <span class="badge badge-success">
+                                                        <a style="color: white !important" class="tag p-1" href="{% url 'community:tag' tag.slug %}">
+                                                            {{tag.name}}
+                                                        </a>
+                                                    </span>
+                                                {% endfor %}
+                                                <!-- {% for tag in obj.categories.all %}
+                                                    <span class="badge badge-success">
+                                                        <a style="color: white !important" class="tag p-1" href="#">
+                                                            {{ tag }}
+                                                        </a>
+                                                    </span>
+                                                {% endfor %} -->
+                                            </div>
+                                            <div class="col">
+                                                <div class="row no-margin">
+                                                    <div class="col-m-4">
+                                                        <p class="p"><span class="text-muted">Asked</span> <span>{{ obj.time_stamp| timesince  }} ago</span> <span>by <span style="color: aqua;">{{ obj.author.user.username }}</span></span> </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation example">
+                        <ul
+                            class="pagination pagination-template d-flex justify-content-center"
+                        >
+                            {% if queryset.has_previous %}
+                                <li class="page-item">
+                                    <a
+                                        href="?{{page_request_var}}={{ queryset.previous_page_number }}"
+                                        class="page-link"
+                                    >
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            <!-- and num < queryset.number|:'3' -->
+                            {% endif %} 
+                            {% for num in queryset.paginator.page_range %} 
+                                {% if queryset.number == num %}
+                                    <li class="page-item">
+                                        <a
+                                          href="?{{page_request_var}}={{ queryset.number }}"
+                                          class="page-link active"
+                                        >
+                                            {{ num }}
+                                        </a>
+                                    </li>
+                                {% elif num > queryset.number|add:'-3' %}
+                                    <li class="page-item">
+                                        <a
+                                          href="?{{page_request_var}}={{ queryset.number }}"
+                                          class="page-link"
+                                          >{{ num }}</a
+                                        >
+                                    </li>
+                                {% endif %} 
+                            {% endfor %}
+                            {% if queryset.has_next %}
+                                <li class="page-item">
+                                  <a
+                                    href="?{{page_request_var}}={{ queryset.next_page_number }}"
+                                    class="page-link"
+                                  >
+                                    <i class="fa fa-angle-right"></i>
+                                  </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </main>
+                <!-- with  category_count=category_count queryset=queryset ta=ta  -->
+                {% include 'Ecommunity/utils/commnity_side_bar.html' with category_count=category_count tag_count=tag_count latest=latest %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

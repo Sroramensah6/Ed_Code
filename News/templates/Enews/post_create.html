@@ -1,0 +1,90 @@
+{% extends "Enews/utils/layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+<style>
+    .form-group .wmd-wrapper .wmd-panel{
+        position: relative;
+        margin-left: 0 !important;
+        margin-bottom: 20px;
+        /* width: 100% !important; */
+    }
+    .wmd-preview{
+        display: none;
+    }
+    .post-body img{
+        width: 100%;
+    }
+    .img_current{
+        width: 100%;
+        max-height: 300px;
+    }
+    .post-details #content_img img{
+        width: 100%;
+    }
+    .post-single .post-thumbnail img{
+        height: 610px;
+    }
+    #div_id_thumbnail a,
+    #div_id_thumbnail input[type=checkbox],
+    /* #div_id_thumbnail label[for="id_thumbnail"], */
+    #div_id_thumbnail label[for="thumbnail-clear_id"]{
+        display: none;
+    } 
+</style>
+<div class="mt-5 mb-5">
+    <div class="row no-gutters">
+
+        <div class="col">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <p style="font-size: larger;" class="text-center display-2">Preview</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="content-preview mt-5">
+                            <div class="post blog-post">
+                                <div class="post-single">
+                                    <div class="post-head">
+                                        <h1 style="font-size: 50px;" id="preview-title" class="display-2"></h1 >
+                                        <div id="preview-content-over-view"></div>
+                                    </div>
+                                    <div id="content_img" class="post-thumbnail">
+                                        <img src="" alt="imge" class="img-responsive img-fluid">
+                                    </div>
+                                    <div class="post-details">
+                                        <div class="post-body">
+                                            <div id="preview-content"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                    <p style="font-size: larger;" class="text-center display-2">Create an article</p>
+                    </div>
+                    {{ form.media }}
+                    <div class="card-body">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" role="button" class="btn btn-outline-primary btn-sm btn-iconed btn-rounded">
+                                <i class="fa fa-arrow-left"></i> <span class="spn">Submit</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

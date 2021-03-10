@@ -1,0 +1,695 @@
+{% extends "Enews/utils/layout.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+<style>
+  .blog-post .post-comments .comment-body {
+    margin-left: 0px;
+  }
+  .xy{
+    border-left: 3px solid rgb(230, 230, 230);
+    margin-bottom: 24px;
+    margin-left: 12px;
+  }
+  .hide {
+    display : none;
+  }
+  .post-body img{
+    width: 100%;
+  }
+  .post-single .post-thumbnail img{
+    height: 610px;
+  }
+  .star-font{
+    font-size: 21px !important;
+  }
+  section a {
+    color: #ccc !important;
+  }
+  section a:hover {
+    font-size: 21px !important;
+  }
+  .status{
+    display: inline-block;
+    margin: 0 3px 0 0;
+    min-width: 44px;
+    height: auto;
+    font-size: 11px;
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+  }
+  main, aside {
+    padding: 50px 0 0px;
+  }
+
+
+.header-title {
+  background-color: #303F9F;
+  color: #fff;
+  height: 3rem;
+  margin-bottom:3rem;
+  box-shadow: 0 .25rem .25rem rgba(0, 0, 0, 0.4);
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+}
+main {
+  transition: transform .7s ease-in-out;
+  color: #fff;
+}
+
+.move-to-left {
+  transform: translateX(-400px);
+}
+.move-to-left-partly {
+  transform: translateX(-200px);
+}
+.sidebar {
+  height: 100%;
+  width: 400px;
+  position: fixed;
+  top: 0rem;
+  z-index: 9929999;
+  right: -400px;
+  background-color: #FFF;
+  box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.4);
+  transition: transform .7s ease-in-out;
+}
+.sidebar .post-comments {
+  overflow: auto;
+  list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    height: 100%;
+}
+.container-liner{
+  margin-left:1rem;
+}
+.sidebar-tab {
+  height: 100%;
+  width: 1rem;
+  position: fixed;
+  top: 0rem;
+  z-index: 9929999;
+  right: 0;
+  background-color: #FFF;
+  box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.5);
+  transition: transform .7s ease-in-out;
+}
+#sidebar-tab-text{ 
+    width: 400px;
+}
+.vertical-text {
+	transform: rotate(90deg);
+	transform-origin: left 2rem;
+  vertical-align:middle;
+}
+.arrow {
+  /* left: 143px; */
+  box-sizing: border-box;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  transform: rotate(0deg);
+  transition: all 0.5s ease-in-out;
+  width: 20px;
+  height: 15px;
+  z-index: 1;
+}
+.arrow:after, .arrow:before {
+  content: "";
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  transition: all 0.25s ease-in-out;
+  border-radius: 10px;
+  background: #000;
+  width: 9px;
+  height: 3.2px;
+  top: 14.4px;
+}
+.arrow:after {
+  transform: rotate(44deg);
+  left: 3.2px;
+}
+.arrow:before {
+  right: 3.2px;
+  transform: rotate(-44deg);
+}
+.arrow.active:after {
+  transform: rotate(-44deg);
+}
+.arrow.active:before {
+  transform: rotate(44deg);
+}
+
+.blog-post .add-comment textarea {
+  min-height: 55px;
+}
+textarea.form-control {
+height: 10px;
+}
+textarea {
+  margin: 15px 0 10px;
+  /* max-width: 40%; */
+}
+.form-control {
+    display: block;
+    width: 100% !important;
+  }
+</style>
+
+<div class="container community">
+    <div class="row">
+      <!-- Latest Posts -->
+      <main class="post blog-post col-lg-8"> 
+        <div class="container">
+          <div class="post-single">
+            <div class="post-head pb-4">
+              <h1 style="font-size: 50px;" class="display-2">{{ post.title }}<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
+                <div class="post-body">
+                  {{ post.get_over_view_mark_down }} 
+                </div> 
+              <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                <a href="#" class="author d-flex align-items-center flex-wrap">
+                  <div class="avatar">
+                    <img src="{{ post.author.profile_image.url }}" alt="profile image" class="img-fluid">
+                  </div>
+                  <div class="title">
+                    <span>{{ post.author.user.username.capitalize }}</span>
+                  </div>
+                </a>
+                <div class="d-flex align-items-center flex-wrap">       
+                  <!-- <div class="date">
+                    <i class="fa fa-clock-o"></i> {{ post.time_stamp | timesince }} ago
+                  </div> -->
+                  <div class="date">
+                    <i class="fa fa-clock-o"></i> {{ post.publish  }} 
+                  </div>
+                  <div class="views">
+                    read time: {% if post.read_time|time:'i' <= '01' %} 1 minute{% elif post.read_time|time:'i' <= '02' %}2 minutes{% elif post.read_time|time:'i' <= '02' %}2 minutes{% elif post.read_time|time:'i' <= '03' %}3 minutes{% elif post.read_time|time:'i' <= '04' %}4 minutes{% elif post.read_time|time:'i' <= '05' %}5 minutes{% elif post.read_time|time:'i' <= '06' %}6 minutes{% elif post.read_time|time:'i' <= '07' %}7 minutes{% elif post.read_time|time:'i' <= '08' %}8 minutes{% elif post.read_time|time:'i' <= '09' %}9 minutes{% else %}{{ post.read_time|time:'i' }} minutes{% endif %} 
+                  </div>
+                  <div class="views meta-last">
+                    Total words: {{ post.words_count }}
+                  </div>
+                </div>
+              </div>
+              <div class="post-meta d-flex justify-content-between">
+                <div style="float: right;">
+                  {% if post.author_id == user.id %}
+                    <div class="d-flex">
+                      <a class="btn btn-sm btn-outline-primary btn-iconed" href="{% url 'news:post-updated' post.id %}">
+                        <i class="fa fa-pencil-square-o"></i> <span class="spn">Update</span>
+                      </a>
+                      <a class="btn btn-sm btn-outline-primary btn-iconed" href="{% url 'news:post-deleted' post.id %}">
+                        <i class="fa fa-trash-o"></i> <span class="spn">Delete</span>
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            <div class="post-thumbnail">
+              <img src="{{ post.thumbnail.url }}" alt="..." class="img-fluid">
+            </div>
+            <div class="post-details">
+              <!-- <h1>{{ post.title }}<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
+              <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                <a href="#" class="author d-flex align-items-center flex-wrap">
+                  <div class="avatar">
+                    <img src="{{ post.author.profile_image.url }}" alt="profile image" class="img-fluid">
+                  </div>
+                  <div class="title">
+                    <span>{{ post.author.user.username }}</span>
+                  </div>
+                </a>
+                <div class="d-flex align-items-center flex-wrap">       
+                  <div class="date">
+                    <i class="fa fa-clock-o"></i> {{ post.time_stamp | timesince }} ago
+                  </div> 
+                  <div class="date">
+                    <i class="fa fa-clock-o"></i> {{ post.publish  }} 
+                  </div>
+                  <div class="views">
+                    read time: {% if post.read_time|time:'i' <= '01' %} 1 minute{% elif post.read_time|time:'i' <= '02' %}2 minutes{% elif post.read_time|time:'i' <= '02' %}2 minutes{% elif post.read_time|time:'i' <= '03' %}3 minutes{% elif post.read_time|time:'i' <= '04' %}4 minutes{% elif post.read_time|time:'i' <= '05' %}5 minutes{% elif post.read_time|time:'i' <= '06' %}6 minutes{% elif post.read_time|time:'i' <= '07' %}7 minutes{% elif post.read_time|time:'i' <= '08' %}8 minutes{% elif post.read_time|time:'i' <= '09' %}9 minutes{% else %}{{ post.read_time|time:'i' }} minutes{% endif %} 
+                  </div>
+                  <div class="views meta-last">
+                    Total words: {{ post.words_count }}
+                  </div>
+                </div>
+              </div> -->
+              <div class="post-body post-detail-item">
+                {{ post.get_mark_down }}
+              </div>
+              <div class="post-tags mt-5 mb-5">
+                  {% for cat in post.categories.all %}
+                    <a class="tag" href="{% url 'news:post-category' cat.slug %}">#{{ cat }}</a>
+                  {% endfor %}
+              </div>
+              <div class="row mb-5">
+                <div class="col-8">
+                  <div class="d-flex align-items-center flex-wrap">       
+                    <!-- <div class="date">
+                      <i class="fa fa-clock-o"></i> {{ post.time_stamp | timesince }} ago
+                    </div> -->
+                    <div style="color: #999;" class="d-flex">
+                      <i style="font-size: 25px;" class="fa fa-eye"></i> 
+                      <div style="font-size: 14px;" class="text-center pl-2 text-muted">
+                        {{ post.view_count }}
+                      </div>
+                    </div>
+                    <div style="color: #999; cursor: pointer;" class="pl-4 pr-4 d-flex" onclick="toggleSidebar()">
+                      <i style="font-size: 25px;" class="fa fa-comments-o" aria-hidden="true"></i>  
+                      <div style="font-size: 14px;" class="text-center pl-2 text-muted">
+                        {{ post.comments.count}}
+                      </div>
+                    </div>
+                    <section style="color: #999;" class="rating-widget">
+                      {% if request.user.is_authenticated %}
+                          {% if request.user.profile not in post.liked.all %}
+                            <form action="{{ post.get_like_url }}" method="POST" class="like-form" id="{{ post.id }}">
+                              {% csrf_token %}
+                              <input type="hidden" name="post_id" value="{{ post.id }}">
+                              <div class="rating-stars text-center">
+                                  <ul id="stars" class="d-flex">
+                                      <button type="submit"
+                                        value="
+                                          {% if request.user.profile not in post.liked.all %}
+                                            like
+                                          {% else %}
+                                              Unlike
+                                          {% endif %}
+                                          " 
+                                        class="star btn-like like-btn{{post.id}} d-flex" title="like"
+                                      >
+                                          <i class="fa fa-heart-o fa-fw"></i>
+                                          <div class="text-center like-num  like-count{{post.id}}">
+                                            {{ post.num_liked }}
+                                        </div>
+                                      </button>
+                                  </ul>
+                              </div>
+                            </form>
+                          {% else %}
+                            <form action="{{ post.get_like_url }}" method="POST" class="like-form" id="{{ post.id }}">
+                              {% csrf_token %}
+                              <input type="hidden" name="post_id" value="{{ post.id }}">
+                              <div class="rating-stars text-center">
+                                  <ul id="stars" class="d-flex">
+                                      <button type="submit"
+                                        value="
+                                          {% if request.user.profile not in post.liked.all %}
+                                            like
+                                          {% else %}
+                                              Unlike
+                                          {% endif %}
+                                          " 
+                                        class="star btn-like like-btn{{post.id}} selected d-flex" title="like"
+                                      >
+                                          <i class="fa fa-heart fa-fw"></i>
+                                          <div class="text-center like-num like-count{{post.id}}">
+                                            {{ post.num_liked }}
+                                        </div>
+                                      </button>
+                                  </ul>
+                              </div>
+                            </form>
+                          {% endif %}
+                      {% else %}
+                          <a href="{% url 'accounts:login' %}" class="d-flex">
+                            <i class="fa fa-heart-o fa-fw"></i>
+                            <div class="text-center like-num like-count{{post.id}}">
+                              {{ post.num_liked }}
+                            </div>
+                          </a>
+                      {% endif %}
+                    </section>
+                  </div>
+                </div>
+                <div class="col d-flex">
+                  <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}/" target="_blank">
+                    Facebook
+                  </a>
+                  <a href="https://twitter.com/intent/tweet?text={{ share_string }}%20by%20%40{{ post.author.user.username.capitalize }}%20{{ request.build_absolute_uri }}" target="_blank">
+                    Twitter
+                  </a>
+                  <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}/&title={{ share_string }}&summary={{ post.content|truncatechars_html:100 }}&source={{ request.build_absolute_uri }}/" target="_blank">
+                    Linkedin
+                    </a>
+                </div>
+              </div>
+              <!-- <div class="text-center mt-4">
+                <a  class="comment-btn btn btn-sm btn-outline-dark" href="#">Click to Comment</a>
+              </div> -->
+              <!-- <div class="add-comment-sect hide">
+                <div class="add-comment">
+                  {% if request.user.is_authenticated %}
+                  <form method="POST" action="" class="commenting-form">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="form-group col-md-12">
+                        {% render_field form.content|add_class:'form-control' id="usercomment" rows='4' placeholder=form.content.label %}
+                      </div>
+                      <div class="form-group col-md-12">
+                        <button type="submit" class="btn btn-secondary">Submit</button>
+                      </div>
+                    </div>
+                  </form>
+                  {% else %}
+                  <a class="btn btn-sm btn-outline-primary btn-iconed" href="{% url 'accounts:login' %}">
+                    Login to comment
+                  </a>
+                  {% endif %}
+                </div>
+              </div> -->
+              <!-- <div class="post-comments">
+                <header>
+                  <h3 class="h6">Post Comments<span class="no-of-comments">({{ post.comments.count}})</span></h3>
+                </header>
+                {% for comment in post.get_comments %}
+                  <div class="comment">
+                    <div class="comment-header d-flex justify-content-between">
+                      <div class="user d-flex align-items-center">
+                        <div class="image">
+                          {% if comment.user.author %}
+                            <img src="{{ comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                          {% else %}
+                            <img src="{{ comment.user.profile.profile_image.url }}" alt="..." class="img-fluid rounded-circle">
+                          {% endif %}
+                        </div>
+                        <div class="title">
+                          <strong>
+                            {{ comment.user.username }}
+                          </strong>
+                          <div class="d-flex align-items-center flex-wrap"> 
+                            <div class="views">
+                              <span class="date">{{ comment.time_stamp|timesince}} ago</span>
+                            </div>      
+                            <div class="date">
+                              {% if comment.children.count > 0 %}
+                                <span class="date">
+                                  <a href="#" class="comments-reply-section-btn">
+                                    ({{comment.children.count }}) Comment{% if comment.children.count > 1 %}s{% endif %}
+                                  </a>
+                                </span>
+                              {% else %}
+                                <span class="date">
+                                  ({{comment.children.count }}) Comment
+                                </span>
+                              {% endif %}
+                            </div>
+                            <div class="views">
+                              <span class="date">
+                                <a class="reply-comment-btn" href="#">
+                                  Reply
+                                </a>
+                              </span>
+                            </div>
+                            {% if request.user == comment.user %}
+                              <div class="views">
+                                <span class="date">
+                                  <a  href="{{comment.get_absolute_url}}">
+                                    Thread
+                                  </a>
+                                </span>
+                              </div>
+                                <div class="comments meta-last">
+                                <span class="date">
+                                  <a class="btn btn-outline-danger btn-sm" href="{% url 'comment:delete' comment.id %}">
+                                    <span class="m-0" style="font-size: 12px;">Delete</span> 
+                                  </a>
+                                </span>
+                              </div>
+                            {% else %}
+                              <div class="views meta-last">
+                                <span class="date">
+                                  <a  href="{{comment.get_absolute_url}}">
+                                    Thread
+                                  </a>
+                                </span>
+                              </div>
+                            {% endif %}
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="comment-body mb-5">
+                      <blockquote>
+                        {{ comment.content }}
+                      </blockquote>
+                      <div class="comment-reply hide mb-4">
+                        <div class="add-comment">
+                          {% if request.user.is_authenticated %}
+                            <form method="POST" action="" class="commenting-form">
+                              {% csrf_token %}
+                              <div class="row">
+                                <div class="form-group col-md-12">
+                                  <input type="hidden" name="parent_id" value="{{comment.id}}">
+                                  {% render_field form.content|add_class:'form-control' id="usercomment" rows='4' placeholder='Reply about comment' %}
+                                </div>
+                                <div class="form-group col-md-12">
+                                  <button type="submit" class="btn btn-secondary">Post Comment</button>
+                                </div>
+                              </div>
+                            </form>
+                            {% else %}
+                            <a class="btn btn-sm btn-outline-primary btn-iconed" href="{% url 'accounts:login' %}">
+                              Login to comment
+                            </a>
+                            {% endif %}
+                        </div>
+                      </div>
+                       Start comment_reply
+                      <div class="comments-reply-section hide">
+                        {% for child_comment in comment.children %}
+                          <div class="comment">
+                            <div class="comment-header d-flex justify-content-between">
+                              <div class="user d-flex align-items-center">
+                                <div class="image">
+                                  {% if child_comment.user.author %}
+                                    <img src="{{ child_comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                                  {% else %}
+                                    <img src="{{ child_comment.user.profile.profile_image.url }}" alt="{{ child_comment.user.username }}'s profile image" class="img-fluid rounded-circle">
+                                  {% endif %}
+                                </div>
+                                <div class="title">
+                                  <strong>
+                                    {{ child_comment.user.username}}
+                                  </strong>
+                                  <div class="d-flex align-items-center flex-wrap">
+
+                                  {% if request.user == child_comment.user %}
+                                    <div class="views">
+                                      <span class="date">
+                                        {{ child_comment.time_stamp|timesince}} ago
+                                      </span>
+                                    </div>
+                                    <div class="comments meta-last">
+                                      <span class="date">
+                                        <a class="btn btn-outline-danger btn-sm" href="{% url 'comment:delete' child_comment.id %}">
+                                          <span class="m-0" style="font-size: 12px;">Delete</span> 
+                                        </a>
+                                      </span>
+                                    </div>
+                                  {% else %}
+                                    <div class="views  meta-last"> 
+                                      <span class="date">
+                                        {{ child_comment.time_stamp|timesince}} ago
+                                      </span>
+                                    </div>
+                                  {% endif %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="comment-body">
+                              <p>{{ child_comment.content }}</p>
+                           </div>
+                        {% endfor %}
+                      </div>
+                      </div>
+                      End comment_reply 
+                    </div>
+                  </div>
+                {% empty %}
+                  <div class="comment">
+                    <div class="comment-body">
+                      <p> No comments </p>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </main>
+      {% include 'Enews/sidebar.html' with latest=latest category_count=category_count queryset=queryset %}
+    </div>
+    <div>
+      <main style="padding-top: 0px !important;" class="posts-listing">
+        <div class="contanier">
+          <h2 style="font-size: 20px; font-weight: 400;" class="display-1 h5">More From Edward</h2>
+          <hr>
+          <div class="row pt-5">
+            {% for post in similar_post %}
+              <div class="post col">
+                <p>More from {{post.author.user.username.capitalize}}</p>
+                <div style="border: none;" class="card">
+                  <div style="width: 100%; height: 40%" class="post-thumbnail">
+                    <a href="{{ post.get_absolute_url }}">
+                      <img
+                        class="img-fluid"
+                        alt="{{post.title|truncatechars_html:60}}"
+                        src="{{ post.thumbnail.url }}"
+                        style="
+                          background-size: cover;
+                          background-position: 50% 50%;
+                          background-origin: border-box;
+                          width: 100%; height: 250px;"
+                      />
+                    </a>
+                  </div>
+                  <div style="padding-top: 20px !important; padding: 0px;" class="card-body post-details">
+                    <a href="{{ post.get_absolute_url }}">
+                      <h3 style="font-size: 20px; font-weight: 400;" class="h4 display-1">
+                        {{post.title|truncatechars_html:60}}
+                      </h3>
+                    </a>
+                    <div class="text-muted post-detail-item">{{ post.get_mark_down | truncatechars_html:60 }}</div>
+                    <footer class="post-footer d-flex align-items-center">
+                      <a href="{{ post.get_absolute_url }}" class="author d-flex align-items-center flex-wrap">
+                        <div class="avatar">
+                          <img
+                            class="img-fluid"
+                            src="{{ post.author.profile_image.url }}"
+                            alt="{{post.author.user.username}}' profile image"
+                          />
+                        </div>
+                          <span class="status">
+                            <div class="like-count{{post.id}}">
+                              {{ post.author.user.username.capitalize }}
+                            </div>
+                            <div class="text-muted">
+                               <i class="fa fa-clock-o"></i> {{ post.time_stamp | timesince }} ago
+                            </div>
+                          </span>
+                      </a>
+                        <div class="pl-5 date comments meta-last">
+                          <i class="fa fa-comment-o"></i>{{ post.comments.count }}
+                        </div>
+                        <div class="pl-3 date comments meta-last">
+                          <i class="fa fa-comment-o"></i>{{ post.comments.count }}
+                        </div>
+                    </footer>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              No post
+            {% endfor %}
+          </div>
+        </div>
+      </main>
+    </div>
+    {% include 'Enews/comment.html' with post=post %}
+</div>
+
+  <!-- <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+    {% if post.previous_post %}
+      <a href="{{ post.previous_post.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">
+        <div class="icon prev">
+          <i class="fa fa-angle-left"></i>
+        </div>
+        <div class="text"><strong class="text-primary">Previous Post</strong>
+          <h6>{{ post.previous_post.title }}</h6>
+        </div>
+      </a>
+      {% else %}
+      <a class="prev-post text-left d-flex align-items-center">
+        <div class="icon prev">
+          <i class="fa fa-angle-left"></i>
+        </div>
+        <div class="text"><strong class="text-primary">Previous Post</strong>
+          <h6>No Previous</h6>
+        </div>
+      </a>
+    {% endif %}
+    {% if post.next_post %}
+      <a href="{{ post.next_post.get_absolute_url }}" class="next-post text-right d-flex align-items-center justify-content-end">
+        <div class="text"><strong class="text-primary">Next Post</strong>
+          <h6>{{ post.next_post.title }}.</h6>
+        </div>
+        <div class="icon next">
+          <i class="fa fa-angle-right"></i>
+        </div>
+      </a>
+      {% else %}
+      <a class="next-post text-right d-flex align-items-center justify-content-end">
+        <div class="text"><strong class="text-primary">Previous Post</strong>
+          <h6>No Next</h6>
+        </div>
+        <div class="icon next">
+          <i class="fa fa-angle-right"></i>
+        </div>
+      </a>
+    {% endif %}
+  </div> -->
+<!-- <script>
+    $(function(){
+  $("#sidebar-tab-text").width($("#sidebar").height());
+});
+$( window ).resize(function() {
+  $("#sidebar-tab-text").width($("#sidebar").height());
+});
+function toggleSidebar(){
+  $("#sidebar").toggleClass("move-to-left");
+  $("#sidebar-tab").toggleClass("move-to-left");
+  // $("main").toggleClass("move-to-left-partly");
+  $(".arrow").toggleClass("active");
+}
+// * Totally unncessary swyping gestures*/
+var gestureZone = document;
+var touchstartX = 0, touchstartY = 0;
+gestureZone.addEventListener('touchstart', function(event) {
+    touchstartX = event.changedTouches[0].screenX;
+    touchstartY = event.changedTouches[0].screenY;
+}, false);
+
+gestureZone.addEventListener('touchend', function(event) {
+    var touchendX = event.changedTouches[0].screenX;
+    var touchendY = event.changedTouches[0].screenY;
+    handleGesure(touchendX, touchendY);
+}, false); 
+
+function handleGesure(touchendX, touchendY) {
+    var acceptableYTravel = (touchendY-touchstartY) < 15 && (touchendY-touchstartY) > -15;
+  
+    var swiped = 'swiped: ';
+    if (touchendX < touchstartX && acceptableYTravel) {
+        openSidebar();
+        console.log(swiped + 'left!');
+    }
+    if (touchendX > touchstartX  && acceptableYTravel) {
+        closeSidebar();
+        console.log(swiped + 'right!');
+    }
+}
+function openSidebar(){
+  $("#sidebar").addClass("move-to-left");
+  $("main").addClass("move-to-left-partly");
+  $("#sidebar-tab").addClass("move-to-left");
+  $(".arrow").addClass("active");
+}
+function closeSidebar(){
+  $("#sidebar").removeClass("move-to-left");
+  $("main").removeClass("move-to-left-partly");
+  $("#sidebar-tab").removeClass("move-to-left");
+  $(".arrow").removeClass("active");
+}
+  </script> -->
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends "accounts/base.html" %}
+{% load widget_tweaks %}
+{% block title %}{{title}}{% endblock %} 
+
+{% block content %}
+  <div class="container">
+    <div class="row no-gutters">
+      <div class="col-md-3 item">
+        <small>
+        <div class="card box effect8 item-card card-block">
+          <div id="home" role="button" class="btn btn-outline-info btn-lg btn-iconed btn-rounded">
+              <span class="spn">Back to Home</span>
+          </div>
+          <span class="nav-link">
+            <img class="profile_settings" src="{{ request.user.profile.profile_image.url }}" alt=""> 
+          </span>
+          <h4 class="item-card-title text-right"></h4>
+          <ul style="text-align: center;" class="list-unstyled CTAs">
+            {% if user.is_authenticated %}
+            <small>
+                <li>
+                    <span class="nav-link">
+                      <i class="fa fa-envelope fa-2x"></i>
+                      <p>{{ user.profile.email }}</p>
+                    </span>
+                </li>
+                <li>
+                    <span class="nav-link">
+                     <i class="fa fa-phone fa-2x"></i>
+                      <p>{{ user.profile.phone_number }}</p>
+                    </span>
+                </li>
+                <li>
+                    <span class="nav-link">
+                        <i class="fa fa-building fa-2x"></i>
+                        <p>{{ user.profile.company_name }}</p>
+                    </span>
+                </li>
+                <li>
+                    <span class="nav-link">
+                        <i class="fa fa-thumbtack fa-2x"></i>
+                        <p>{{ user.profile.location }}</p>
+                    </span>
+                </li>
+                <li>
+                    <span class="text-muted nav-link">
+                        <i class="fa fa-eye"></i>
+                        {{ user.profile.last_seen }}
+                    </span>
+                </li>
+              </small>
+            {% endif %}
+            <!-- <li>
+                <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
+            </li>
+            <li>
+                <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+            </li> -->
+        </ul>
+          <!-- <h5 class="card-title  mt-3 mb-3">ProVyuh</h5> -->
+        </div>
+        </small>
+      </div>
+      <div class="col right effect7 box p-3">
+        <div class="">
+          <h1 style="font-size: 30px;" class="text-center display-1">{{ user.username.capitalize }}'s profile</h1>
+          <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <span class="help-block">{{ profile_form.email.errors }}</span>
+              <label for="{{ profile_form.email.id_for_label }}" class=" col-form-label" >{{ profile_form.email.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field profile_form.email placeholder=profile_form.email.label %}
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.email.help_text }}</small>
+            </div>
+            <div class="form-group">
+              <span class="help-block">{{ profile_form.phone_number.errors }}</span>
+              <label for="{{ profile_form.phone_number.id_for_label }}" class=" col-form-label" >{{ profile_form.phone_number.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field profile_form.phone_number placeholder=profile_form.phone_number.label %}
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.phone_number.help_text }}</small>
+            </div>
+            <div class="form-group">
+              <span class="help-block">{{ profile_form.location.errors }}</span>
+              <label for="{{ profile_form.location.id_for_label }}" class=" col-form-label" >{{ profile_form.location.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field profile_form.location placeholder=profile_form.location.label %}
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.location.help_text }}</small>
+            </div>
+            <div class="form-group">
+              <span class="help-block">{{ profile_form.company_name.errors }}</span>
+              <label for="{{ profile_form.company_name.id_for_label }}" class=" col-form-label" >{{ profile_form.company_name.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field profile_form.company_name placeholder=profile_form.company_name.label %}
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.location.help_text }}</small>
+            </div>
+            <div class="form-group">
+              <span class="help-block">{{ profile_form.profile_image.errors }}</span>
+              <label for="{{ profile_form.profile_image.id_for_label }}" class=" col-form-label" >{{ profile_form.profile_image.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field profile_form.profile_image placeholder=profile_form.profile_image.label %} 
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.profile_image.help_text }}</small>
+            </div>
+            <!-- <div class="form-group">
+              <span class="help-block">{{ profile_form.birth_date.errors }}</span>
+              <label for="{{ profile_form.birth_date.id_for_label }}" class=" col-form-label">{{ profile_form.birth_date.label_tag }}</label> -->
+              <!-- <div class="row">
+                <div class="col">
+                  {% render_field profile_form.birth_date placeholder=profile_form.birth_date.label %}
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.birth_date.help_text }}</small>
+            </div>
+            <div class="form-group">
+              <span class="help-block">{{ profile_form.bio.errors }}</span>
+              <label for="{{ profile_form.bio.id_for_label }}" class=" col-form-label" >{{ profile_form.bio.label_tag }}</label>
+              <div class="row">
+                <div class="col">
+                  {% render_field profile_form.bio placeholder=profile_form.bio.label %}
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">{{ profile_form.bio.help_text }}</small>
+            </div> -->
+            <div class="row m-3">
+              <div class="col text-center">
+                <button type="submit" role="button" class="btn btn-sm btn-outline-warning btn-lg btn-iconed btn-rounded">
+                   <i class="fa fa-arrow-left"></i> <span class="spn">Update</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    let home = document.querySelector('#home');
+    home.addEventListener('click', (e)=> {
+        e.preventDefault(); 
+        window.history.back();
+    })
+  </script>
+{% endblock %}

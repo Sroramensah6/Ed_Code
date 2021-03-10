@@ -1,0 +1,168 @@
+<div class="community">
+  <div class="post blog-post">
+    <div class="post-single">
+      <div class="container">
+        <div class="post-head">
+          <div class="post-comments">
+            <header>
+              <h3 class="h6">Post Comments<span class="no-of-comments">({{ post.comments.count}})</span></h3>
+            </header>
+            {% for comment in post.get_comments %}
+              <div class="comment">
+                <div class="comment-header d-flex justify-content-between">
+                  <div class="user d-flex align-items-center">
+                    <div class="image">
+                      {% if comment.user.author %}
+                        <img src="{{ comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                      {% else %}
+                        <img src="{{ comment.user.profile.profile_image.url }}" alt="..." class="img-fluid rounded-circle">
+                      {% endif %}
+                    </div>
+                    <div class="title">
+                      <strong>
+                        {{ comment.user.username }}
+                      </strong>
+                      <div class="d-flex align-items-center flex-wrap"> 
+                        <div class="views">
+                          <span class="date">{{ comment.time_stamp|timesince}} ago</span>
+                        </div>      
+                        <div class="date">
+                          {% if comment.children.count > 0 %}
+                            <span class="date">
+                              <a href="#" class="comments-reply-section-btn">
+                                ({{comment.children.count }}) Comment{% if comment.children.count > 1 %}s{% endif %}
+                              </a>
+                            </span>
+                          {% else %}
+                            <span class="date">
+                              ({{comment.children.count }}) Comment
+                            </span>
+                          {% endif %}
+                        </div>
+                        <div class="views">
+                          <span class="date">
+                            <a class="reply-comment-btn" href="#">
+                              Reply
+                            </a>
+                          </span>
+                        </div>
+                        {% if request.user == comment.user %}
+                          <div class="views">
+                            <span class="date">
+                              <a  href="{{comment.get_absolute_url}}">
+                                Thread
+                              </a>
+                            </span>
+                          </div>
+                            <div class="comments meta-last">
+                            <span class="date">
+                              <a class="btn btn-outline-danger btn-sm" href="{% url 'comment:delete' comment.id %}">
+                                <span class="m-0" style="font-size: 12px;">Delete</span> 
+                              </a>
+                            </span>
+                          </div>
+                        {% else %}
+                          <div class="views meta-last">
+                            <span class="date">
+                              <a  href="{{comment.get_absolute_url}}">
+                                Thread
+                              </a>
+                            </span>
+                          </div>
+                        {% endif %}
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-body mb-5">
+                  <blockquote>
+                    {{ comment.content }}
+                  </blockquote>
+                  <div class="comment-reply hide mb-4">
+                    <div class="add-comment">
+                      {% if request.user.is_authenticated %}
+                        <form method="POST" action="" class="commenting-form">
+                          {% csrf_token %}
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <input type="hidden" name="parent_id" value="{{comment.id}}">
+                              {% render_field form.content|add_class:'form-control' id="usercomment" rows='4' placeholder='Reply about comment' %}
+                            </div>
+                            <div class="form-group col-md-12">
+                              <button type="submit" class="btn btn-secondary">Post Comment</button>
+                            </div>
+                          </div>
+                        </form>
+                        {% else %}
+                        <a class="btn btn-sm btn-outline-primary btn-iconed" href="{% url 'accounts:login' %}">
+                          Login to comment
+                        </a>
+                        {% endif %}
+                    </div>
+                  </div>
+                  <!-- Start comment_reply -->
+                  <div class="comments-reply-section hide">
+                    {% for child_comment in comment.children %}
+                      <div class="comment">
+                        <div class="comment-header d-flex justify-content-between">
+                          <div class="user d-flex align-items-center">
+                            <div class="image">
+                              {% if child_comment.user.author %}
+                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                              {% else %}
+                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="{{ child_comment.user.username }}'s profile image" class="img-fluid rounded-circle">
+                              {% endif %}
+                            </div>
+                            <div class="title">
+                              <strong>
+                                {{ child_comment.user.username}}
+                              </strong>
+                              <div class="d-flex align-items-center flex-wrap">
+                              
+                              {% if request.user == child_comment.user %}
+                                <div class="views">
+                                  <span class="date">
+                                    {{ child_comment.time_stamp|timesince}} ago
+                                  </span>
+                                </div>
+                                <div class="comments meta-last">
+                                  <span class="date">
+                                    <a class="btn btn-outline-danger btn-sm" href="{% url 'comment:delete' child_comment.id %}">
+                                      <span class="m-0" style="font-size: 12px;">Delete</span> 
+                                    </a>
+                                  </span>
+                                </div>
+                              {% else %}
+                                <div class="views  meta-last"> 
+                                  <span class="date">
+                                    {{ child_comment.time_stamp|timesince}} ago
+                                  </span>
+                                </div>
+                              {% endif %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="comment-body">
+                          <p>{{ child_comment.content }}</p>
+                       </div>
+                    {% endfor %}
+                  </div>
+                  </div>
+                  <!-- End comment_reply  -->
+                </div>
+              </div>
+            {% empty %}
+              <div class="comment">
+                <div class="comment-body">
+                  <p> No comments </p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

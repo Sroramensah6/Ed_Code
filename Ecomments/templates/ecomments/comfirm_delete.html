@@ -1,0 +1,62 @@
+{% extends "Enews/utils/layout.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+<style>
+  .hide {
+    display : none;
+  }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-md-6">
+            <main class="post blog-post"> 
+                <div class="container">
+                    <div class="post-single">
+                        <div class="post-details">
+                            <div class="post-comments">
+                                <div class="comment">
+                                    <h1 class="text-center">Comfirm Delete</h1>
+                                    <div class="comment-body mb-5">
+                                        <div class="mb-4">
+                                            <div class="add-comment">
+                                                {% if request.user.is_authenticated %}
+                                                    <form method="POST" action="" class="commenting-form">
+                                                        {% csrf_token %}
+                                                        <div class="form-group text-center">
+                                                            <div class="card">
+                                                                <div class="card-header text-red">
+                                                                    Deleting this comment is irreversible
+                                                                </div>
+                                                                <div style="height: 120px;" class="card-body pt-5">
+                                                                    <p>Are you sure you want to delete "{{object.content}}"?</p> 
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <button style='float: left;' type="submit" class="btn btn-danger">Comfirm Delete</button>
+                                                                    <a style='float: right;' href="{{ object.get_absolute_url }}" class="btn btn-warning">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+
+
+{% endblock %}

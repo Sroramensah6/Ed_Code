@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'Ecommunity/utils/head.html' %}
+    <body>
+    
+        {% include 'Ecommunity/utils/header.html' %}
+
+        <div class="wrapper">
+            <!-- Page Content  -->
+            <div id="content">
+                {% block body %} {% endblock%}
+            </div>
+        </div>
+
+        {% include 'Ecommunity//utils/script.html' %}
+        <script>
+            $(document).ready(function(){
+                $('.like-form').submit(function(e){
+                    e.preventDefault()
+                    const post_id = $(this).attr('id')
+                    const likeText = $(`.like-btn${post_id}`).text()
+                    const trim = $.trim(likeText)
+
+
+                    const url_ = $(this).attr('action')
+                    console.log(url_)
+
+                    let res;
+                    const likes = $(`.like-count${post_id}`).text()
+                    const trimCount = parseInt(likes)
+                    $.ajax({
+                        method:'POST',
+                        url: url_,
+                        data: {
+                            'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                            'post_id': post_id
+                        },
+                        success:function(data){
+                            if (trim === 'Unlike') {
+                                $(`.like-btn${post_id}`).text('Like')
+                                res = trimCount - 1
+                            } else {
+                                $(`.like-btn${post_id}`).text('Unlike')   
+                                res = trimCount + 1
+                            }
+                            $(`.like-count${post_id}`).text(res)
+                        }, error: function(error){
+                            console.log(error);
+                            console.log('error');
+                        }
+                    })
+                })
+            })
+
+        </script>
+        <script>
+            $(document).ready(function(){
+                /* 1. Visualizing things on Hover - See next part for action on click */
+                $('#stars button').on('mouseover', function(){
+                    var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+                
+                    // Now highlight all the stars that's not after the current hovered star
+                    $(this).parent().children('button.star').each(function(e){
+                    if (e < onStar) {
+                        $(this).addClass('hover');
+                    }
+                    else {
+                        $(this).removeClass('hover');
+                    }
+                    });
+                    
+                }).on('mouseout', function(){
+                    $(this).parent().children('button.star').each(function(e){
+                    $(this).removeClass('hover');
+                    });
+                });
+                
+                
+                /* 2. Action to perform on click */
+                $('#stars button').on('click', function(){
+                    var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+                    var stars = $(this).parent().children('button.star');
+                    
+                    for (i = 0; i < stars.length; i++) {
+                    $(stars[i]).removeClass('selected');
+                    }
+                    
+                    for (i = 0; i < onStar; i++) {
+                    $(stars[i]).addClass('selected');
+                    }
+
+                    let isSubmit = false
+                    $('.rate-form').submit(function(e){
+                        e.preventDefault()
+                        if (isSubmit) {
+                            return
+                        }
+                        isSubmit = true
+                        const post_id = $(this).attr('id')
+                        const url_ = $(this).attr('action')
+                        console.log(post_id);
+                        console.log(url_);
+                        console.log(onStar);
+                        console.log('$',$('input[name=csrfmiddlewaretoken]').val());
+                        $.ajax({
+                            type: 'POST',
+                            url: url_,
+                            data: {
+                                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                                'el_id': post_id,
+                                'val': onStar,
+                            },
+                            success: (response) =>{
+                                console.log(response.success);
+                                re = parseInt(response.score)
+                                // console.log(response.score)
+                                for (i = 0; i < re; i++) {
+                                    // console.log('star');
+                                    $(stars[i]).addClass('selected');
+                                }
+                                // confirmBox.innerHTML = `<h1>Successfully rated with ${response.score}</h1>`
+                            },
+                            error: (error) =>{
+                                console.log(error)
+                                // confirmBox.innerHTML = '<h1>Ups... something went wrong</h1>'
+                            }
+                        })
+                    })
+                    
+                });
+            });
+        </script>
+    </body>
+</html>

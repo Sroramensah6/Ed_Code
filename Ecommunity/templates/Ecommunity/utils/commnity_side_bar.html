@@ -1,0 +1,68 @@
+<aside class="col-md-4">
+    <div style="border-color: f1e5bc; background-color: #fdf7e3" class="card">
+        <div class="card-header">
+          <span style="font-size: 12px; font-weight: 900"
+            >Search the questions</span
+          >
+        </div>
+        <div class="widget search">
+          <form action="{% url 'community:search' %}" class="search-form">
+            <div class="form-group">
+              <input type="text" name="q" placeholder="What are you looking for?" />
+              <button type="submit" class="submit">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="card-header">
+          <span style="font-size: 12px; font-weight: 900">The Edward Blog</span>
+        </div>
+        <div class="card-body">
+            <ul class="list-unstyled">
+                {% for obj in latest %}
+                <li class="mt-2 mb-2">
+                    <a href="#">
+                        <p style="font-size: 12px">
+                          {{ obj.title | truncatechars:50 }}?
+                        </p>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="mt-3 p-4 blog-posts">
+        <h1 style="font-size: larger" class="display">Related</h1>
+        {% for post in similar_post %}
+        <p>
+            <a href="">
+              <span class="badge badge-primary"
+                ><span style="font-size: 12px">1129</span></span
+              >
+              {{post.title}}?
+            </a>
+        </p>
+      
+        {% endfor %}
+    </div>
+  <div class="widget categories">
+    <header>
+      <h3 class="h6">Categories</h3>
+    </header>
+  </div>
+  <div class="widget tags">
+    <header>
+      <h3 class="h6">Tags</h3>
+    </header>
+    <ul class="list-inline">
+      {% for obj in tag_count %}
+      <li class="list-inline-item">
+        <a href="{% url 'community:tag' obj.tags__slug %}" class="tag">
+          #{{ obj.tags__name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</aside>

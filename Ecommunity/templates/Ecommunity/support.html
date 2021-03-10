@@ -1,0 +1,143 @@
+{% extends "Ecommunity/base.html" %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+ 
+{% block body %}
+<div class="community">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <!-- <div class="container"> -->
+                    <div id="content" class="snippet-hidden">
+                        <div class="border-bottom container">
+                            <div class="m-3">
+                                <h4 class="display-4"> 
+                                    Where To Get Support
+                                </h4>
+                                <p style="font-size: 24px !important;" class="text-muted display-3 mt-5"> 
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                </p>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
+                                </p>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                    within.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-bottom container">
+                            <div class="m-3">
+                                <h2> 
+                                    Ecal Overflow
+                                </h2>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                    exercitation ullamco laboris nisi ut <a href="{% url 'community:community' %}">Ecal Overflow</a> aliquip ex ea commodo consequat. Duis aute irure
+                                    within.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="border-bottom container">
+                            <div class="m-3">
+                                <h2> 
+                                    Popular Discussion Forums 
+                                </h2>
+                                <p class="mt-4">
+                                    
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                    within.
+                                </p>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+                                </p>
+                                <ul>
+                                    <li> <a href="#">Lorem ipsum dolor sit amet</a></li>
+                                    <li> <a href="#">Consectetur adipiscing elit</a></li>
+                                    <li> <a href="#">Integer molestie lorem at massa</a></li>
+                                    <li> <a href="#">Facilisis in pretium nisl aliquet</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="m-3">
+                                <h2> 
+                                    News
+                                </h2>
+                                <p class="mt-4">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </div> -->
+            </div>
+            <nav style="box-shadow: -3px -3px 6px rgba(0, 0, 0, 0.1);" id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky">
+                    <div  class="pt-3 pl-2 pb-3">
+                        <p style="font-size: 20px !important;">Lorem ipsum dolor sit amet <span class="pl-2"><i style="font-size: medium;" class="fa fa-chevron-up"></i></span></p>
+                    </div>
+                    <ul id="info nav-it" class="nav flex-column">
+                        <li class="nav-item side_info act">
+                            <a class="nav-link side_ nav-it" href="{% url 'community:support' %}">
+                                <span data-feather="support"></span>
+                                Support
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="team"></span>
+                                Team
+                            </a>
+                        </li>
+                        <li class="nav-item  side_info">
+                            <a class="nav-link side_" href="{% url 'community:community' %}">
+                                <span data-feather="ecal overflow"></span>
+                                Eflow
+                            </a>
+                        </li>
+                        <li class="nav-item side_info">
+                            <a class="nav-link side_" href="#">
+                                <span data-feather="articles"></span>
+                                Articles
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    let nav = document.querySelector('#info');
+    let navlink = document.getElementsByClassName('side_info');
+    for (var i = 0; i < navlink.length; i++) {
+        navlink[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("act");
+            current[0].className = current[0].className.replace(" act", "");
+            this.className += " act";
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    let navi = document.querySelector('#nav-it');
+    let navlinki = document.getElementsByClassName('side_');
+    console.log('j ',navlinki.length);
+    for (var i = 0; i < navlinki.length; i++) {
+        navlinki[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("nav-it");
+            current[0].className = current[0].className.replace(" nav-it", "");
+            this.className += " nav-it";
+        });
+    }
+</script>
+{% endblock %}

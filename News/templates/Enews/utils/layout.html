@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+    {% include 'Enews/utils/head.html' %}
+    <body>
+        {% include 'Enews/utils/header.html' %}
+
+        {% block body %}
+    
+        {% endblock%}
+        
+        <!-- Page Footer-->
+        {% include 'Enews/utils/footer.html' %}
+
+        {% include 'Enews/utils/script.html' %}
+        <script>
+            $(document).ready(function(){
+                $('.sidebar #usercommentes').focus( function() {
+                    // store original height
+                    $(this).attr('data-height', $(this).height());
+                    $('.form-btn').animate('slow').fadeToggle()
+                    // animate the height change
+                    $(this).animate({ height: 100, width: 350}, 'slow');
+                }).blur( function(e) {
+                    // set to original height
+                    $(this).animate({ height: $(this).attr('data-height')}, 'slow');
+                });
+                $('.mark-down').each(function(e){
+                    var content = $(this).text();
+                    var markedContent = marked(content);
+                    $(this).html(markedContent);
+                })
+                $('.post-detail-item img').each(function(e){
+                    $(this).addClass('img-responsive');
+                })
+
+                var imageFile = $('#div_id_thumbnail a')
+                const setContentImg = (value) => {
+                    $('#content_img img').attr('src', value)
+                    $(`<div class='pic_current'>
+                            <label>
+                            </label>
+                        </div>`).appendTo('.card-body form #div_id_thumbnail label');
+                    $(`<img src='${value}' class="img-responsive img_current">`).appendTo('.card-body form #div_id_thumbnail .pic_current');
+                }
+
+                var titleInput = $('#id_title')
+                // console.log(titleInput.text(titleInput.val()));
+                const setTitle = (value) => {
+                    var markedtitle = marked(value)
+                    $('#preview-title').text(titleInput.val())
+                }
+                
+                var contentHeadInput = $('#id_over_view')
+                const setContentHead = (value) => {
+                    var markedContent = marked(value)
+                    $('#preview-content-over-view').html(marked(markedContent))
+                }
+
+                var contentInput = $('#wmd-input-id_content')
+                const setContent = (value) => {
+                    var markedContent = marked(value)
+                    $('#preview-content').html(marked(markedContent))
+                    $('#preview-content img').each(function(){
+                        $(this).addClass('img-responsive')
+                    })
+                }
+                setContentImg(imageFile.attr('href'))
+                setTitle(titleInput.val())
+                setContentHead(contentHeadInput.val())
+                setContent(contentInput.val())
+
+                titleInput.keyup(function() {
+                    var newTitle = $(this).val();
+                    setTitle(newTitle)
+                })
+
+                contentHeadInput.keyup(function(){
+                    var newContentHead = $(this).val()
+                    setContentHead(newContentHead)
+                })
+
+                contentInput.keyup(function() {
+                    var newContent = $(this).val();
+                    setContent(newContent)
+                })
+                
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                    
+                        reader.onload = function (e) {
+                            $('#content_img img').attr('src', e.target.result);
+                            // $(`<div class='pic_current'><label>Current pic</label></div>`).appendTo('.card-body form #div_id_thumbnail div .pic_current');
+                            // $(`<img src='${value}' class="img-responsive img_current">`).appendTo('.card-body form #div_id_thumbnail div');
+                        }
+                    
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                $("#id_thumbnail").change(function(){
+                    readURL(this);
+                });
+            })
+        </script>
+        <script>
+            $(document).ready(function(){
+                /* 1. Visualizing things on Hover - See next part for action on click */
+                $('#stars button').on('mouseover', function(){
+                    var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+                    $('#stars button i').addClass('star-font');
+                    con = $(this).attr('title', 'like');
+                    $('.like-num').addClass('hover');
+                    
+                    // Now highlight all the stars that's not after the current hovered star
+                    $(this).parent().children('button.star').each(function(e){
+                        if (e < onStar) {
+                            $(this).addClass('hover');
+                        }
+                        else {
+                            $(this).removeClass('hover');
+                            $('.like-num').removeClass('hover');
+                        }
+                    });
+                    
+                }).on('mouseout', function(){
+                    $(this).parent().children('button.star').each(function(e){
+                        $(this).removeClass('hover');
+                        $('.like-num').removeClass('hover');
+                        $('#stars button i').removeClass('star-font');
+                    });
+                });
+                
+                
+                /* 2. Action to perform on click */
+                $('#stars button').on('click', function(){
+                    if($('#stars button i').hasClass("fa-heart")){
+                        $('#stars button i').removeClass('fa-heart');
+                        $('#stars button i').addClass('fa-heart-o');
+                        $(this).removeClass('selected');
+                        
+                    }else{
+                        $('#stars button i').removeClass('fa-heart-o');
+                        $('#stars button i').addClass('fa-heart');
+                        $(this).addClass('selected');
+                    }
+
+                    let isSubmit = false
+                    $('.like-form').submit(function(e){
+                        e.preventDefault()
+                        if (isSubmit) {
+                            return
+                        }
+                        isSubmit = true
+                        const post_id = $(this).attr('id')
+                        const likeText = $(`.like-btn${post_id}`).attr('value')
+                        const trim = $.trim(likeText)
+                        console.log(trim);
+                        
+                        const url_ = $(this).attr('action')
+                        
+                        let res;
+                        
+                        const likes = $(`.like-count${post_id}`).text()
+                        const trimCount = parseInt(likes)
+                        console.log(trimCount);
+                        $.ajax({
+                            method:'POST',
+                            url: url_,
+                            data: {
+                                'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                                'post_id': post_id
+                            },
+                        
+                            success:function(data){
+                                if (trim == 'Unlike'){
+                                    $(`.like-btn${post_id}`).val('Like')
+                                    res = trimCount - 1
+                                } else{
+                                    $(`.like-btn${post_id}`).val('Unlike')   
+                                    res = trimCount + 1
+                                }
+                                $(`.like-count${post_id}`).text(res)
+                            }, error: function(error){
+                                console.log(error);
+                                console.log('error');
+                            }
+                        })
+                    
+                    })
+
+                    // let isSubmit = false
+                    // $('.rate-form').submit(function(e){
+                    //     e.preventDefault()
+                    //     if (isSubmit) {
+                    //         return
+                    //     }
+                    //     isSubmit = true
+                    //     const post_id = $(this).attr('id')
+                    //     const url_ = $(this).attr('action')
+                    //     console.log(post_id);
+                    //     console.log(url_);
+                    //     console.log(onStar);
+                    //     console.log('$',$('input[name=csrfmiddlewaretoken]').val());
+                    //     $.ajax({
+                    //         type: 'POST',
+                    //         url: url_,
+                    //         data: {
+                    //             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    //             'el_id': post_id,
+                    //             'val': onStar,
+                    //         },
+                    //         success: (response) =>{
+                    //             console.log(response.success);
+                    //             re = parseInt(response.score)
+                    //             // console.log(response.score)
+                    //             for (i = 0; i < re; i++) {
+                    //                 // console.log('star');
+                    //                 $(stars[i]).addClass('selected');
+                    //             }
+                    //             // confirmBox.innerHTML = `<h1>Successfully rated with ${response.score}</h1>`
+                    //         },
+                    //         error: (error) =>{
+                    //             console.log(error)
+                    //             // confirmBox.innerHTML = '<h1>Ups... something went wrong</h1>'
+                    //         }
+                    //     })
+                    // })
+                    
+                })
+            });
+        </script>
+    </body>
+</html>

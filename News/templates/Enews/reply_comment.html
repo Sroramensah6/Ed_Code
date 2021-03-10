@@ -1,0 +1,174 @@
+{% load widget_tweaks %}
+<div class="comments-reply-section hide xy">
+    <!-- First reply -->
+    {% for child_comment in comment.children %}
+        <div class="comment container-fluid pt-3">
+            <div class="comment-header justify-content-between">
+                <div class="user d-flex align-items-center">
+                    <div style="padding-left: 0;" class="col-md-10 d-flex">
+                        <div class="image">
+                            {% if child_comment.user.author %}
+                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                            {% else %}
+                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="{{ child_comment.user.username }}'s profile image" class="img-fluid rounded-circle">
+                            {% endif %}
+                        </div>
+                        <div class="title">
+                            <p style="margin-block-end: 0; margin-bottom: 0;">
+                                {{ child_comment.user.username}}
+                            </p>
+                            <div class="d-flex align-items-center flex-wrap">
+                                <span class="date">
+                                    <!-- {{ child_comment.time_reply }}  -->
+                                    {{ child_comment.time_stamp|timesince}} ago
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <span style="float: right;" >
+                            <a class="text-red" href="{% url 'comment:delete' comment.id %}">
+                                <i title="Delete comment" class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom: 0px; padding-bottom: 0px;" class="comment-body">
+                <p>{{ child_comment.content }}</p>
+                <footer>
+                    <div class="container">
+                        <div class="row">
+                            <div style="padding-left: 0; padding-right: 0;" class="col-md-8">
+                                <div class="d-flex align-items-center pt-1 flex-wrap">
+                                    {% if child_comment.children %}
+                                        <div class="views ">
+                                            <span class="date">
+                                                <a class="" href="#">
+                                                    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </div>  
+                                        <div class="date meta-last">
+                                            <span class="date">
+                                                <a href="#" class="reply-second-comment-btn">
+                                                    <i class="fa fa-comment-o"></i> {{child_comment.children.count }} <!--Comment{% if child_comment.children.count > 1 %}s{% endif %}-->
+                                                </a>
+                                            </span>
+                                        </div>
+                                    {% else %}
+                                        <div class="date meta-last">
+                                            <div class="">
+                                                <span class="date">
+                                                    <a class="" href="#">
+                                                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                                    </a>
+                                                </span>
+                                            </div>  
+                                        </div>  
+                                    {% endif %}
+                                    <!-- {% if request.user == child_comment.user %}
+                                        <div class="comments meta-last">
+                                            <span class="date">
+                                                <a class="btn btn-outline-danger btn-sm" href="{% url 'comment:delete' child_comment.id %}">
+                                                    <span class="m-0" style="font-size: 12px;">Delete</span> 
+                                                </a>
+                                            </span>
+                                        </div>
+                                    {% else %}
+                                        <div class="views  meta-last"> 
+                                            <span class="date">
+                                                ({{ child_comment.children.count }}) Comment
+                                            </span>
+                                        </div>
+                                    {% endif %} -->
+                                </div>
+                            </div>
+                            <div class="col h">
+                                <div style="float: right;"  class="d-flex align-items-center pt-1 flex-wrap">
+                                    <span class="date">
+                                        <a id="{{child_comment.id}}" data-value="{{child_comment.id}}" class="third-reply-comment-btn{{child_comment.id}}" href="#">
+                                            <i class="fa fa-reply" aria-hidden="true"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <!-- <span style="float: right;"  class="date">
+                                    <a class="" href="#">
+                                        Reply
+                                    </a>
+                                </span> -->
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <br>
+                <!-- Second Reply -->
+                <div class="second-comment-reply xy hide">
+                    {% for obj in child_comment.children %}
+                        <div class="comment container-fluid">
+                            <div class="comment-header d-flex justify-content-between">
+                                <div class="user d-flex align-items-center">
+                                    <div style="padding-left: 0;" class="col-md-11  d-flex">
+                                        <div class="image">
+                                            {% if obj.user.author %}
+                                                <img src="{{ child_comment.user.profile.profile_image.url }}" alt="author" class="img-fluid rounded-circle">
+                                            {% else %}
+                                                <img src="{{ obj.user.profile.profile_image.url }}" alt="{{ obj.user.username }}'s profile image" class="img-fluid rounded-circle">
+                                            {% endif %}
+                                        </div>
+                                        <div class="title">
+                                            <p style="margin-block-end: 0; margin-bottom: 0;">
+                                              {{ obj.user.username}}
+                                            </p>
+                                            <div class="d-flex align-items-center flex-wrap">
+                                                <span class="date">
+                                                    {{ obj.time_stamp|timesince}} ago
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        {% if request.user == obj.user %}
+                                            <span style="float: right;" >
+                                                <a class="text-red" href="{% url 'comment:delete' obj.id %}">
+                                                    <i title="Delete comment" class="fa fa-trash-o" aria-hidden="true"></i> 
+                                                </a>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                <blockquote>
+                                    <p>{{ obj.content }}</p>
+                                </blockquote>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="ki third-comment-reply{{child_comment.id}} mb-4 hide" data-value="{{ child_comment.id }}">
+                    <div class="add-comment">
+                        {% if request.user.is_authenticated %}
+                            <form method="POST" action="" class="commenting-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <input type="hidden" name="parent_id" value="{{child_comment.id}}">
+                                        {% render_field form.content|add_class:'form-control' id="usecomments" rows='4' placeholder='Reply about comment' %}
+                                    </div>
+                                    <div class="form-group col-md-12 text-center">
+                                        <button type="submit" class="btn btn-secondary">Reply Comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                        {% else %}
+                            <a class="text-center btn btn-sm btn-outline-primary btn-iconed text-center" href="{% url 'accounts:login' %}">
+                                Login to comment
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

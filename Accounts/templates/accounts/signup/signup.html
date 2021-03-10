@@ -1,0 +1,78 @@
+{% extends 'accounts/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="pt-5 container">
+  <div class="row no-gutters">
+    <!-- <div class="col"></div> -->
+    <div class="effect7 box p-4 col-md-6">
+      <h1 style="font-size: 30px;" class="pt-3 text-center display-1">{{ header }}</h1>
+      <!-- <h2 class=""></h2> -->
+      <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <span class="help-block">{{ form.username.errors }}</span>
+        <label for="{{ form.username.id_for_label }}" class=" col-form-label" >{{ form.username.label_tag }}</label>
+        <div class="row pt-2 pb-2">
+          <div class="col">
+            {% render_field form.username placeholder=form.username.label %}
+          </div>
+        </div>
+        <small id="emailHelp" class="form-text text-muted">{{ form.first_name.help_text }}</small>
+      </div>
+      <div class="form-group">
+        {{ form.email.errors }}
+        <label for="{{ form.email.id_for_label }}" class=" col-form-label" >{{ form.email.label_tag }}</label>
+        <div class="row pb-2">
+          <div class="col">
+            {% render_field form.email placeholder=form.email.label %}
+          </div>
+        </div>
+        <!-- <small id="emailHelp" class="form-text text-muted">{{ form.email.help_text }}</small> -->
+      </div>
+      <div class="form-group">
+        {% if form.password1.errors %}
+          <div class="alert alert-danger">{{ form.password1.errors }}</div>
+        {% endif %}
+        <label for="{{ form.password1.id_for_label }}" class=" col-form-label" >{{ form.password1.label_tag }}</label>
+        <div class="row pb-2">
+          <div class="col">
+            {% render_field form.password1 placeholder=form.password1.label %}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        {% if form.password2.errors %}
+          <div class="alert alert-danger">{{ form.password2.errors }}</div>
+        {% endif %}
+        <label for="{{ form.password2.id_for_label }}" class=" col-form-label" >{{ form.password2.label_tag }}</label>
+        <div class="row pb-2">
+          <div class="col">
+            {% render_field form.password2 placeholder=form.password2.label %}
+          </div>
+        </div>
+        <!-- <small class="form-text text-muted">{{ form.password2.help_text }}</small> -->
+      </div>
+      <div class="row m-3">
+        <div class="col text-center">
+          <button type="submit" role="button" class="btn btn-sm btn-outline-primary btn-lg btn-iconed btn-rounded">
+             <i class="fa fa-arrow-left"></i> <span class="spn">Sign up</span>
+          </button>
+        </div>
+    </div>
+        <div class="mt-4 p-3">
+          <div class="d-flex justify-content-center links">
+            You already have an account? <a href="{% url 'accounts:login' %}" class="ml-2" >Login</a>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div  class="col-md-6 right signup_card box effect8">
+      <img class="img-fluid" src="{% static 'images/20945218.jpg' %}" alt="">
+    </div>
+  </div>
+</div>
+{% endblock %}
